@@ -1,0 +1,94 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+  public static class PriorityQueue {
+    ArrayList<Integer> data;
+
+    public PriorityQueue() {
+      data = new ArrayList<>();
+    }
+	public void swap(int idx1, int idx2){
+		int temp = data.get(idx1);
+		data.set(idx1, data.get(idx2));
+		data.set(idx2, temp);
+	}
+	public void upHeapify(int childIdx){
+		if(childIdx == 0)return;
+		int parentIdx = (childIdx - 1) / 2;
+		if(data.get(childIdx) < data.get(parentIdx)){
+			swap(childIdx, parentIdx);
+			upHeapify(parentIdx);
+		}
+	}
+	public void downHeapify(int parentIdx){
+		int leftChildIdx = (parentIdx * 2) + 1;
+		int rightChildIdx = (parentIdx * 2) + 2;
+		int leftValue = leftChildIdx >= data.size() ? Integer.MAX_VALUE : data.get(leftChildIdx);
+		int rightValue = rightChildIdx >= data.size() ? Integer.MAX_VALUE : data.get(rightChildIdx);
+		int smallestIdx = parentIdx;
+		if(data.get(smallestIdx) > leftValue)smallestIdx = leftChildIdx;
+		if(data.get(smallestIdx) > rightValue)smallestIdx = rightChildIdx;
+		if(smallestIdx != parentIdx){
+			swap(smallestIdx, parentIdx);
+			downHeapify(smallestIdx);
+		}
+	}
+    public void add(int val) {      
+		data.add(val);
+		upHeapify(data.size() - 1);
+    }
+
+    public int remove() {
+		if(data.size() == 0){
+			System.out.println("Underflow");
+			return -1;
+		}
+		swap(0, data.size() - 1);
+		int rvalue = data.remove(data.size() - 1);
+		if(data.size() == 0)return rvalue;
+		downHeapify(0);
+		return rvalue;
+      
+    }
+
+    public int peek() {
+	    if(data.size() == 0){
+			System.out.println("Underflow");
+			return -1;
+	    }
+		return data.get(0);
+	}
+
+    public int size() {
+      return data.size();
+    }
+  }
+
+  public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    PriorityQueue qu = new PriorityQueue();
+
+    String str = br.readLine();
+    while (str.equals("quit") == false) {
+      if (str.startsWith("add")) {
+        int val = Integer.parseInt(str.split(" ")[1]);
+        qu.add(val);
+      } else if (str.startsWith("remove")) {
+        int val = qu.remove();
+        if (val != -1) {
+          System.out.println(val);
+        }
+      } else if (str.startsWith("peek")) {
+        int val = qu.peek();
+        if (val != -1) {
+          System.out.println(val);
+        }
+      } else if (str.startsWith("size")) {
+        System.out.println(qu.size());
+      }
+      str = br.readLine();
+    }
+  }
+}
