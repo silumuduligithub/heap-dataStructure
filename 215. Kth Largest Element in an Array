@@ -1,0 +1,13 @@
+// when we are finding kth smallest at that time we use mazimum priorityQueue, and when we are finding kth largest at that time we use minimum priorityQueue
+// here the timecomplexity is o(n) and the space complexity is o(n)
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> minPq = new PriorityQueue<>();
+        for(int i = 0; i < nums.length; i++){
+            minPq.add(nums[i]);
+            while(minPq.size() > k)
+                minPq.remove();
+        }
+        return minPq.remove();
+    }
+}
