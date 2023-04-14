@@ -1,0 +1,14 @@
+// as we are finding kth smallest element then here we are going to use maximum priorityQueue
+// here the timecomplexity is o(n) and the space complexity is o(k);
+class Solution{
+    public static int kthSmallest(int[] arr, int l, int r, int k) 
+    { 
+        //Your code here
+        PriorityQueue<Integer> maxPq = new PriorityQueue<>(Collections.reverseOrder());
+        for(int i = l; i <= r; i++){
+            maxPq.add(arr[i]);
+            while(maxPq.size() > k)maxPq.remove();
+        }
+        return maxPq.remove();
+    } 
+}
