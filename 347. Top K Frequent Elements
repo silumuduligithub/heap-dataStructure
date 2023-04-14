@@ -1,0 +1,32 @@
+class Solution {
+	class Pair implements Comparable<Pair>{
+		int value;
+		int freq;
+		int number ;
+		Pair(int value, int freq){
+			this.value = value;
+			this.freq = freq;
+		}
+		public int compareTo(Pair o){
+			return o.freq - this.freq;
+		}
+	}
+	public int[] topKFrequent(int[] nums, int k) {
+		HashMap<Integer, Integer> map = new HashMap<>();
+		for(int n : nums){
+			map.put(n, map.getOrDefault(n, 0) + 1);
+		}
+		PriorityQueue<Pair> pq = new PriorityQueue<>();
+		for(int n : map.keySet()){
+			pq.add(new Pair(n, map.get(n)));
+		}
+		int c = 0;
+		int res[] = new int[k];
+		while(k != 0){
+			Pair rpair = pq.remove();
+			res[c++] = rpair.value;
+			k--;
+		}
+		return res;
+	}
+}
