@@ -1,0 +1,43 @@
+// here the timecomplexity is o(n)
+class Solution {
+    class Pair implements Comparable<Pair>{
+        char ch;
+        int freq;
+        StringBuilder totalCh = new StringBuilder("");
+        Pair(char ch, int freq){
+            this.ch = ch;
+            this.freq = freq;
+            this.totalCh = totalCh;
+        }
+        public int compareTo(Pair o){
+            if(this.freq == o.freq)return this.ch - o.ch;
+            return o.freq - this.freq;
+        }
+    }
+    public String frequencySort(String s) {
+        Pair[] arr = new Pair[125];
+        for(int i = 0; i < s.length(); i++){
+            char ch = s.charAt(i);
+            int idx = ch;
+            if(arr[idx] != null){
+                Pair obj = arr[idx];
+                obj.freq++;
+                obj.totalCh.append(ch);
+            }else{
+                arr[idx] = new Pair(ch, 1);
+                Pair obj = arr[idx];
+                obj.totalCh.append(ch);
+            }
+        }
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        for(int i = 0; i < 125; i++){
+            if(arr[i] != null)pq.add(arr[i]);
+        }
+        StringBuilder ans = new StringBuilder("");
+        while(pq.size() != 0){
+            Pair rpair = pq.remove();
+            ans.append(rpair.totalCh);
+        }
+        return ans.toString();
+    }
+}
