@@ -1,0 +1,30 @@
+// to solve this problem we take to priorityqueue one is maxtype and another is mintype, at most the maxheap can contains n/2 + 1 and atleast n / 2  elements and the minheap must contains n / 2 elements , if the summation of maxHeap & minHeap is divisible by 2 that means there are even number of elements are present so the median is maxheap.peek() + minHeap.peek()/2 else there is odd number of elements are present so we have to return maxheap.peek();
+class MedianFinder {
+    PriorityQueue<Integer> maxHeap;
+    PriorityQueue<Integer> minHeap;
+    double median;
+    public MedianFinder() {
+        maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        minHeap = new PriorityQueue<>();
+        median = -1;
+    }
+    
+    public void addNum(int num) {
+        if(maxHeap.size() > 0 && maxHeap.peek() >= num)maxHeap.add(num);
+        else if(minHeap.size() > 0 && maxHeap.peek() < num)minHeap.add(num);
+        else maxHeap.add(num);
+        int sizeDiff = maxHeap.size() - minHeap.size();
+        // if diff is 0 or 1 that means we don't need to do anything if the diff is greater than 1 that means the maxheap is contains more number of elements if the diff is lessthan 0 that means the minheap is contains more number of elements 
+        if(sizeDiff > 1){
+            minHeap.add(maxHeap.remove());
+        }
+        if(sizeDiff < 0)maxHeap.add(minHeap.remove());
+        int totalElement = maxHeap.size() + minHeap.size();
+        if((totalElement % 2) == 0)median = (maxHeap.peek() + minHeap.peek()) / 2.0;
+        else median = (double)maxHeap.peek();
+    }
+    
+    public double findMedian() {
+        return median;
+    }
+}
